@@ -15,16 +15,19 @@ module Fog
       collection  :zones
 
       request_path 'fog/aws/requests/dns'
+      request :create_health_check
       request :create_hosted_zone
+      request :delete_health_check
+      request :get_health_check
       request :get_hosted_zone
       request :delete_hosted_zone
+      request :list_health_checks
       request :list_hosted_zones
       request :change_resource_record_sets
       request :list_resource_record_sets
       request :get_change
 
       class Mock
-
         def self.data
           @data ||= Hash.new do |hash, region|
             hash[region] = Hash.new do |region_hash, key|
@@ -97,7 +100,7 @@ module Fog
           @persistent = options.fetch(:persistent, true)
           @port       = options[:port]        || 443
           @scheme     = options[:scheme]      || 'https'
-          @version    = options[:version]     || '2012-02-29'
+          @version    = options[:version]     || '2013-04-01'
 
           @connection = Fog::XML::Connection.new("#{@scheme}://#{@host}:#{@port}#{@path}", @persistent, @connection_options)
         end

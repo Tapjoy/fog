@@ -31,7 +31,7 @@ DATA
 
         string_to_sign.chop!
 
-        signature = derived_hmac(date).sign(string_to_sign)
+        signature = CGI.escape(derived_hmac(date).sign(string_to_sign))
 
         "AWS4-HMAC-SHA256 Credential=#{@aws_access_key_id}/#{credential_scope}, SignedHeaders=#{signed_headers(params[:headers])}, Signature=#{signature.unpack('H*').first}"
       end
@@ -57,7 +57,7 @@ DATA
       end
 
       def signed_headers(headers)
-        headers.keys.collect {|key| key.to_s}.sort.collect {|key| key.downcase}.join(';')
+        headers.keys.map {|key| key.to_s}.sort.map {|key| key.downcase}.join(';')
       end
 
       def derived_hmac(date)
@@ -67,8 +67,6 @@ DATA
         kSigning = Fog::HMAC.new('sha256', kService).sign('aws4_request')
         Fog::HMAC.new('sha256', kSigning)
       end
-
-
     end
   end
 end

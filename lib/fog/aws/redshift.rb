@@ -47,11 +47,9 @@ module Fog
       request :revoke_snapshot_access
 
       class Mock
-
         def initialize(options={})
           Fog::Mock.not_implemented
         end
-
       end
 
       class Real
@@ -75,9 +73,7 @@ module Fog
         # ==== Returns
         # * Redshift object with connection to AWS.
 
-
         def initialize(options={})
-
           @use_iam_profile = options[:use_iam_profile]
           @region = options[:region] || 'us-east-1'
           setup_credentials(options)
@@ -91,8 +87,7 @@ module Fog
           @scheme     = options[:scheme]      || 'https'
 
           @connection = Fog::XML::Connection.new("#{@scheme}://#{@host}:#{@port}#{@path}", @persistent, @connection_options)
-       end
-
+        end
 
         private
         def setup_credentials(options)
